@@ -60,18 +60,6 @@ class StudentController extends Controller
         
     }
 
-    public function uploadAttachment(Request $request)
-    {
-        try{
-            if($this->student->uploadAttachment($request))
-                return redirect()->back()->with('success',__('messsages.success.add'));
-            return redirect()->back()->with('fail',__('messages.fail.add'));
-        }catch(Exception $obj) {
-            return $obj;
-        }
-        
-    }
-
     /**
      * Display the specified resource.
      *
@@ -116,14 +104,14 @@ class StudentController extends Controller
     public function destroy($id)
     {
         try{
-            
+
             if($this->student->delete($id))
                 return redirect()->back()->with('success',trans('messages.success.delete'));
 
             return redirect()->back()->with('fail',trans('messages.fail.delete'));
 
         }catch(Exception $ex) {
-            throw $ex;
+            
             return redirect()->back()->with('fail','server hangout please try again');
 
         }
@@ -142,4 +130,22 @@ class StudentController extends Controller
             throw $obj;
         }
     }
+
+    public function downloadAttachment($studentID,$fileName)
+    {
+        return $this->student->downloadAttachment($studentID,$fileName);
+    }
+
+    public function uploadAttachment(Request $request)
+    {
+        try{
+            if($this->student->uploadAttachment($request))
+                return redirect()->back()->with('success',__('messages.success.add'));
+            return redirect()->back()->with('fail',__('messages.fail.add'));
+        }catch(Exception $obj) {
+            return $obj;
+        }
+        
+    }
+
 }

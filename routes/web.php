@@ -92,6 +92,7 @@ route::prefix(LaravelLocalization::setLocale())->middleware(
         route::get('/show/{id}','show')->name('student.show');
         route::post('/upload/attachments','uploadAttachment')->name('upload.attachment');
         route::delete('/delete/attachment','deleteAttachment')->name('delete.attachment');
+        route::get('/download/attachment/{studentID}/{fileName}','downloadAttachment')->name('download.attachment');
         
     });
 

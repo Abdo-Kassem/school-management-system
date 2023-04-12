@@ -58,8 +58,8 @@ class StudentService implements IStudentService
 
                     $image = new Image();
                     $image->fileName = $fileName;
-                    $image->ownerID = $student->id;
-                    $image->model = 'App\Models\Student';
+                    $image->imagable_id = $student->id;
+                    $image->imagable_type = 'App\Models\Student';
                     $image->save();
                 }
             }
@@ -72,37 +72,7 @@ class StudentService implements IStudentService
             throw $ex;
         }
         
-    }
-
-    public function uploadAttachment(Request $request)
-    {
-
-        try{
-
-            foreach($request->file('images') as $file) {
-
-                $fileName = $file->getClientOriginalName();
-
-                $file->storeAs(
-                    'attachments/students/'.$request->studentName.$request->studentID,$fileName
-                );
-    
-                $image = new Image();
-    
-                $image->fileName = $fileName;
-                $image->imagable_type = 'App\Models\Student';
-                $image->imagable_id = $request->studentID;
-    
-                $image->save();
-            }
-
-            return true;
-
-        }catch(Exception $obj) {
-            throw $obj;
-        }
-
-    }
+    }    
 
     public function update($data)
     {
@@ -136,12 +106,19 @@ class StudentService implements IStudentService
     {
 
         $student = Student::findorfail($id);
-        
+
         try{
-           
-            return $student->delete();
+
+            Storage::deleteDirectory('attachments/students/'.$student->getTranslation('name','en').$id);
+            DB::beginTransaction();
+            Image::where('imagable_id',$id)->delete();
+            $student->delete();
+            DB::commit();
+
+            return true;
 
         }catch(Exception $ex) {
+            DB::rollBack();
             throw $ex;
         }
 
@@ -159,6 +136,45 @@ class StudentService implements IStudentService
         }catch(Exception $obj) {
             throw $obj;
         }
+    }
+
+    public function uploadAttachment(Request $request)
+    {
+
+        try{
+
+            foreach($request->file('images') as $file) {
+
+                $fileName = $file->getClientOriginalName();
+                $studentName = Student::select('name')->findorfail($request->studentID)->getTranslation('name','en');
+
+                $file->storeAs(
+                    'attachments/students/'.$studentName.$request->studentID,$fileName
+                );
+    
+                $image = new Image();
+    
+                $image->fileName = $fileName;
+                $image->imagable_type = 'App\Models\Student';
+                $image->imagable_id = $request->studentID;
+    
+                $image->save();
+            }
+
+            return true;
+
+        }catch(Exception $obj) {
+            throw $obj;
+        }
+
+    }
+
+    public function downloadAttachment($studentID, $fileName)
+    {
+        
+        $studentName = Student::select('name')->findorfail($studentID)->getTranslation('name','en');
+        
+        return response()->download(Storage::path('attachments/students/'.$studentName.$studentID.'/'.$fileName));
     }
 
 }

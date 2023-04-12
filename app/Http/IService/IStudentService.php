@@ -11,6 +11,8 @@ interface IStudentService extends IService
     public function uploadAttachment(Request $request);
 
     public function deleteAttachment(Request $request);
+
+    public function downloadAttachment($studentID,$fileName);
 }
 
 ?>

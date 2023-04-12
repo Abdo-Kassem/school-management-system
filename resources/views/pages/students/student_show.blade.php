@@ -151,7 +151,7 @@
                                                     <td>{{$attachment->created_at->diffForHumans()}}</td>
                                                     <td colspan="2">
                                                         <a class="btn btn-outline-info btn-sm"
-                                                           href=""
+                                                           href="{{route('download.attachment',['studentID'=>$student->id,'fileName'=>$attachment->fileName])}}"
                                                            role="button"><i class="fa fa-arrow-circle-down" aria-hidden="true"></i>&nbsp; {{trans('student_trans.download')}}
                                                         </a>
 
