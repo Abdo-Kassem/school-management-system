@@ -38,4 +38,7 @@ return [
     'Edit' => 'edit',
     'Delete' => 'delete',
 
+    'profile' => 'profile',
+    'update' => 'update',
+
 ];

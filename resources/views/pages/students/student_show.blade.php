@@ -180,5 +180,7 @@
             <!-- row closed -->
 @endsection
 @section('js')
-
+<script>
+    $('#student').attr('class','active_my');
+</script>
 @endsection

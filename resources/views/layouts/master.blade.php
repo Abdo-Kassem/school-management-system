@@ -27,13 +27,23 @@
 
         @include('layouts.main-header')
 
-        @include('layouts.main-sidebar')
+        @if(Auth::guard('teacher')->check())
+            @include('layouts.main-sidebar.teacher-sidebar')
 
+        @elseif(Auth::guard('web')->check())
+            @include('layouts.main-sidebar.admin-sidebar')
+            
+        @endif
         <!--=================================
  Main content -->
         <!-- main-content -->
-        <div class="content-wrapper">
-
+        @if(Auth::guard('student')->check())
+        <div class="content-wrapper" style="margin:70px 0 0 0">
+        @elseif(Auth::guard('parent')->check())
+        <div class="content-wrapper" style="margin:70px 0 0 0">
+        @else
+        <div class="content-wrapper" style="margin-top:70px">
+        @endif
             @yield('page-header')
 
             @yield('content')
@@ -55,6 +65,19 @@
 
     @include('layouts.footer-scripts')
 
+    @if(Auth::guard('student')->check())
+    <script>
+        $(document).ready(function(){
+
+            $('.footer').css('left',0);
+            $('.footer').css('right',0);
+
+        })
+       
+    </script>
+
+    @endif
+    
 </body>
 
 </html>

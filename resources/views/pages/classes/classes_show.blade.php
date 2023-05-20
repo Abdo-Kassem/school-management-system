@@ -1,12 +1,12 @@
 @extends('layouts.master')
 
 @section('title')
-    {{ trans('My_Classes_trans.title_page') }}
+    {{ trans('classes_trans.page_title') }}
 @endsection
 @section('page-header')
 <!-- breadcrumb -->
 @section('PageTitle')
-{{ trans('My_Classes_trans.title_page') }}
+{{ trans('classes_trans.page_title') }}
 @stop
 <!-- breadcrumb -->
 @endsection
@@ -37,11 +37,12 @@
                 </div>
             @endif
 
-            <button type="button" class="button x-small" data-toggle="modal" data-target="#exampleModal">
+            <button type="button" class="button x-small" data-toggle="modal" data-target="#exampleModal"
+                style="text-transform:capitalize">
                 {{ __('classes_trans.add_study_year') }}
             </button>
 
-            <button type="button" class="button x-small" id="btn_delete_all">
+            <button type="button" class="button x-small" id="btn_delete_all" style="text-transform:capitalize">
                 {{ trans('classes_trans.delete_checkbox') }}
             </button>
 
@@ -353,8 +354,6 @@
 <!-- row closed -->
 @endsection
 @section('js')
-@toastr_js
-@toastr_render
 
 <script type="text/javascript">
     function checkAll(className,obj) {
@@ -383,7 +382,9 @@
     });
 </script>
 
-
+<script>
+    $('#class').attr('class','active_my');
+</script>
 
 
 @endsection

@@ -4,6 +4,7 @@ namespace App\Http\Services;
 
 use App\Http\IService\IGradeService;
 use App\Models\Grade;
+use Illuminate\Support\Facades\Auth;
 
 class GradeService implements IGradeService
 {

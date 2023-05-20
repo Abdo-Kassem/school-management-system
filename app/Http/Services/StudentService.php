@@ -7,6 +7,7 @@ use App\Models\Image;
 use App\Models\Student;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -20,6 +21,18 @@ class StudentService implements IStudentService
                     ->with(['religion'=>function($q){ $q->select(['name','id']);}])
                     ->with(['class'=>function($q){$q->select(['name','id']);}])
                     ->with(['classroom'=>function($q){$q->select(['name','id']);}])->get();
+    }
+
+    public function getStudentsOfTeacher()
+    {
+        $classrooms = Auth::guard('teacher')->user()->classrooms()->select('classe_rooms.id')->get();
+        $students = [];
+
+        foreach($classrooms as $classroom) {
+            $students[] = $classroom->students;
+        }
+
+        return $students;
     }
 
     public function getByID($studentID)
@@ -175,6 +188,11 @@ class StudentService implements IStudentService
         $studentName = Student::select('name')->findorfail($studentID)->getTranslation('name','en');
         
         return response()->download(Storage::path('attachments/students/'.$studentName.$studentID.'/'.$fileName));
+    }
+
+    public function addStudyFees($studentID)
+    {
+        
     }
 
 }

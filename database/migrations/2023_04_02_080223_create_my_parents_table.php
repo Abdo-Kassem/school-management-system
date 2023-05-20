@@ -18,13 +18,14 @@ return new class extends Migration
             $table->increments('id');
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('remember_token',70)->nullable();
 
             //father information
 
             $table->string('fatherName');
             $table->string('fatherPhone',15);
             $table->string('fatherNationalID',20);
-            $table->string('fatherJob',50);
+            $table->string('fatherJob',255);
             $table->string('fatherAddress');
 
             $table->integer('fatherBloodeID')->unsigned();
@@ -36,7 +37,7 @@ return new class extends Migration
             $table->string('motherName');
             $table->string('motherPhone',15);
             $table->string('motherNationalID',20);
-            $table->string('motherJob',50);
+            $table->string('motherJob',255);
             $table->string('motherAddress');
 
             $table->integer('motherBloodeID')->unsigned();

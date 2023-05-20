@@ -25,5 +25,7 @@ return [
     'close' => 'close',
     'create' => 'create',
     'update' => 'update',
-    'warning.delete' => 'do you sure from deletion ? '
+    'warning.delete' => 'do you sure from deletion ? ',
+    'password_display' => 'password show',
+    'profile' => 'profile',
 ];

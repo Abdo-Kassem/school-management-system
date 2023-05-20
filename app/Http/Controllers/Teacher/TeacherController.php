@@ -8,7 +8,9 @@ use App\Http\IService\ISpecializationService;
 use App\Http\IService\ITeacherService;
 use App\Http\Requests\Teacher\CreateTeacherValidation as TeacherCreateTeacherValidation;
 use App\Http\Requests\Teacher\UpdateTeacherValidation as TeacherUpdateTeacherValidation;
+use App\Models\Teacher;
 use Exception;
+use Illuminate\Http\Request;
 
 class TeacherController extends Controller
 {
@@ -112,5 +114,10 @@ class TeacherController extends Controller
         }catch(Exception $ex) {
             return redirect()->back()->with('fail','server hangout please try again');
         }
+    }
+
+    public function getTeacherBy(Request $request)
+    {
+        return Teacher::where('gradeID',$request->gradeID)->pluck('name','id');
     }
 }

@@ -3,13 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Translatable\HasTranslations;
 
-class Student extends Model
+class Student extends Authenticatable
 {
     use HasFactory;
     use HasTranslations;
+    use SoftDeletes;
 
     public $translatable = ['name'];
 
@@ -57,5 +59,10 @@ class Student extends Model
     public function images()
     {
         return $this->morphMany(Image::class,'imagable');
+    }
+
+    public function attendance()
+    {
+        return $this->hasMany(Attendance::class,'studentID','id');
     }
 }

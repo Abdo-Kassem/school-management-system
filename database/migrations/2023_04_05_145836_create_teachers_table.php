@@ -22,6 +22,7 @@ return new class extends Migration
             $table->float('salary')->nullable();
             $table->string('address');
             $table->string('gender',30);
+            $table->string('remember_token',70)->nullable();
             $table->integer('specializationID')->unsigned();
             $table->integer('gradeID')->unsigned();
             $table->timestamp('joining_date');

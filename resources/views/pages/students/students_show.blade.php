@@ -14,9 +14,9 @@
 <!-- row -->
 <div class="row">
 
-<div class="col-xl-12 mb-30">
-    <div class="card card-statistics h-100">
-        <div class="card-body">
+<div class="col-xl-12 mb-30" >
+    <div class="card card-statistics h-100" style="overflow:visible !important">
+        <div class="card-body" >
 
             @if (session()->has('fail'))
               <div class="alert alert-danger">
@@ -37,14 +37,14 @@
                 </div>
             @endif
 
-            <button type="button" class="button x-small" data-toggle="modal" data-target="#add_student">
+            <button type="button" class="button x-small" data-toggle="modal" data-target="#add_student"
+                    style="text-transform:capitalize">
                 {{ __('student_trans.add_student') }}
             </button>
 
+            
 
-            <br><br>
-
-            <div class="table-responsive">
+            <div class="table-responsive" style="overflow:visible !important">
                 <table id="datatable" class="table  table-hover table-sm table-bordered p-0" data-page-length="50"
                     style="text-align: center">
                     <thead>
@@ -78,16 +78,31 @@
                                 <td>{{ $student->religion->name }}</td>
                                 <td>{{ $student->grade->name }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
-                                        data-target="#edit{{ $student->id }}"
-                                        title="{{ trans('student_trans.edit') }}"><i class="fa fa-edit"></i></button>
-                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
-                                        data-target="#delete{{ $student->id }}"
-                                        title="{{ trans('student_trans.delete') }}"><i
-                                            class="fa fa-trash"></i></button>
-                                    <a href="{{route('student.show',$student->id)}}" class="btn btn-warning btn-sm" 
-                                        title="{{ trans('student_trans.show') }}"><i class="fa fa-eye" style='color:white'></i>
-                                    </a>
+                                    <div class="dropdown">
+                                        <button class="btn btn-primary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <button type="button" class="text-success dropdown-item" data-toggle="modal"
+                                                data-target="#edit{{ $student->id }}">
+                                                <i class="fa fa-edit" style='margin:2px'></i>
+                                                {{ trans('student_trans.edit') }}
+                                            </button>
+                                            <button type="button" class="text-danger dropdown-item" data-toggle="modal"
+                                                data-target="#delete{{ $student->id }}">
+                                                <i class="fa fa-trash" style='margin:2px'></i>{{ trans('student_trans.delete') }}
+                                            </button>
+                                            <a href="{{route('student.show',$student->id)}}" class="text-warning dropdown-item" >
+                                                <i class="fa fa-eye" style='color:red;margin:2px'></i>
+                                                {{ trans('student_trans.show') }}
+                                            </a>
+                                            <a href="{{route('student_fees.create',$student->id)}}" class="text-warning dropdown-item" >
+                                                <i class="fa fa-plus" style='margin:2px'></i>
+                                                {{ trans('student_trans.addStudentFees') }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                    
                                 </td>
                             </tr>
 
@@ -601,10 +616,12 @@
 <!-- row closed -->
 @endsection
 @section('js')
-@toastr_js
-@toastr_render
 
 <script type="text/javascript" src="{{URL::asset('assets\js\custom\getClasses_ajax.js')}}"></script>
 <script type="text/javascript" src="{{URL::asset('assets\js\custom\getClassroom_ajax.js')}}"></script>
+
+<script>
+    $('#student').attr('class','active_my');
+</script>
 
 @endsection

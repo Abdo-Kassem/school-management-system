@@ -26,4 +26,6 @@ return [
     'create' => 'اضافه',
     'update' => 'تحديث',
     'warning.delete' => 'هد انت متأكد من عملية الحذف؟',
+    'password_display' => 'اظهار كلمة المرور',
+    'profile' => 'الملف الشخصي',
 ];

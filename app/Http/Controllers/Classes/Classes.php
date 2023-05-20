@@ -157,7 +157,7 @@ class Classes extends Controller
     {
         $Grades = Grade::all();
         $details = Classe::where('gradeID',$request->gradeID)->get();
-        return view('pages.classes_show',compact('Grades','details'));
+        return view('pages.classes.classes_show',compact('Grades','details'));
     }
 
     public function getByGradeID(Request $request)

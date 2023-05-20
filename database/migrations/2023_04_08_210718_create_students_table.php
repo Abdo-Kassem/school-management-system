@@ -23,6 +23,7 @@ return new class extends Migration
             $table->date('birth_date');
             $table->string('academic_year');
             $table->softDeletes();
+            $table->string('remember_token',70)->nullable();
 
             $table->integer('religionID')->unsigned();
             $table->foreign('religionID')->references('id')->on('religions')
@@ -46,7 +47,7 @@ return new class extends Migration
 
             $table->integer('classroomID')->unsigned();
             $table->foreign('classroomID')->references('id')->on('classe_rooms')
-                    ->onDelete('cascade')->onUpdate('cascade');
+                    ->restrictOnDelete()->onUpdate('cascade');
             
             $table->integer('parentID')->unsigned();
             $table->foreign('parentID')->references('id')->on('my_parents')

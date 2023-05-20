@@ -25,7 +25,7 @@ class CreateTeacherValidation extends FormRequest
     {
         return [
             'email' => 'required|email|unique:teachers,email',
-            'password' => 'required|regex:/[A-Z]{2,}[a-z]{2,}[0-9]{4,}/',
+            'password' => 'required|regex:/[A-Z]+[0-9]{6,}[A-Z]+/',
             'name_ar' => 'required|regex:/^[\p{Arabic}\s]+$/u',
             'name_en' => 'required|regex:/^[A-Za-z\s]+$/',
             'salary' => 'required|numeric',

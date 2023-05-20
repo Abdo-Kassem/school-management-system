@@ -2,11 +2,14 @@
 
 return [
     'title_page' => 'student list',
+    'title_page_answer' => 'students answer list',
     'student_name'=>'student name',
     'add_student'=>'Add student',
     'edit'=>'edit student',
     'delete'=>'delete student',
     'show' => 'show student',
+    'show_answer' => 'show student answer',
+    'addStudentFees' => 'add study fees',
     'operation' => 'operation',
     'email'=>'Email',
     'password'=>'password',
@@ -39,4 +42,6 @@ return [
     'student_details' => 'student details',
     'fileName' => 'file name',
     'created_at' => 'upload time',
+    'send' => 'send',
+    'grades' => 'student grades',
 ];

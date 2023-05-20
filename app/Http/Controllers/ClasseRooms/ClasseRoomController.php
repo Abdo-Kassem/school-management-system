@@ -56,41 +56,36 @@ class ClasseRoomController extends Controller
      */
     public function store(CreateClassroomValidator $request)
     {
-
+       
         try {
-
-            foreach($request->list_classrooms as $classroom) {
-              
+  
                 $currentClassroom = new ClasseRoom();
         
                 DB::beginTransaction();
 
-                $currentClassroom->name = ['ar'=>$classroom['name_ar'],'en'=>$classroom['name_en']];
-                $currentClassroom->gradeID = $classroom['gradeID'];
-                $currentClassroom->classesID = $classroom['classesID'];
+                $currentClassroom->name = ['ar'=>$request->name_ar,'en'=>$request->name_en];
+                $currentClassroom->gradeID = $request->gradeID;
+                $currentClassroom->classesID = $request->classesID;
 
                 if(!isset($request->status)) {
+                    
                     $currentClassroom->status = 0;
                 }
-
+                
                 $currentClassroom->save();
                 
-                foreach($classroom['teacherID'] as $id) {
+                foreach($request->teacherID as $id) {
                     Teacher_Classroom::insert([
                         'teacherID' => $id,
-                        'classroomID' => $currentClassroom['id']
+                        'classroomID' => $currentClassroom->id
                     ]);
                 }
 
                 DB::commit();
                 return redirect()->back()->with('success',__('messages.success.add'));
 
-            }
-
-            return redirect()->back()->with('fail',__('messages.fail.add'));
-
         }catch(Exception $obj) {
-            throw $obj;
+           
             return redirect()->back()->with('fail',__('messages.exception_fail'));
         }
     }
@@ -158,7 +153,7 @@ class ClasseRoomController extends Controller
             return redirect()->back()->with('success',__('messages.success.update'));
 
         }catch(Exception $obj) {
-            
+            return $obj;
             return redirect()->back()->with('fail','server hangout try again');
 
         }
@@ -175,10 +170,14 @@ class ClasseRoomController extends Controller
     {
         $classroom = ClasseRoom::findorfail($id);
 
-        if($classroom->delete())
+        if($classroom->students()->count() === 0) {
+
+            if($classroom->delete())
             return redirect()->back()->with('success',__('messages.success.delete'));
 
-        return redirect()->back()->with('fail',__('messages.fail.delete'));
+        }
+
+        return redirect()->back()->with('fail',__('messages.classroom.delete'));
     }
 
     public function getBygradeID(Request $request)

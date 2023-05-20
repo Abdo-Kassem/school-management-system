@@ -46,7 +46,8 @@
                 </div>
                 @endif
                 <div class='border-bottom border-light mb-3 p-3'>
-                    <button class='btn btn-success' data-toggle="modal" data-target="#addClassroom">
+                    <button class='btn btn-success' data-toggle="modal" data-target="#addClassroom"
+                            style="text-transform:capitalize">
                         {{__('classroom_trans.add_classroom')}}
                     </button>
                 </div>
@@ -194,10 +195,10 @@
                                                                         <div class="box">
                                                                             <select class="p-2 form-control" name="teacherID[]" id='teacher' multiple size='2' title='ctr+click to multiple'>
                                         
-                                                                                <option value="0" disabled selected>{{ trans('classroom_trans.teacher_choice') }}</option>
+                                                                                <option value="0" disabled >{{ trans('classroom_trans.teacher_choice') }}</option>
                                                                             
                                                                                 @foreach($classroom->teachers as $teacher)
-                                                                                    <option value="{{$teacher->id}}">{{$teacher->name}}</option>
+                                                                                    <option value="{{$teacher->id}}" selected>{{$teacher->name}}</option>
                                                                                 @endforeach
                                                                                 <option value="0" disabled >------------------------------</option>
                                                                                 @foreach($teachers as $teacher)
@@ -307,100 +308,87 @@
                 <form class=" row mb-30" action="{{route('classroom.store')}}" method="POST">
                     @csrf
                     <div class="card-body">
-                        <div class="repeater">
-                            <div data-repeater-list="list_classrooms">
-                                <div data-repeater-item>
-                                    <div class="row">
+                       
+                            <div class="row">
 
-                                        <div class="col-md-6 col-sm-12 pt-3">
-                                            <label for="name_ar"
-                                                class="mr-sm-2">{{ trans('classroom_trans.name_ar') }}
-                                                :</label>
-                                            <input class="form-control" type="text" name="name_ar" id='name_ar'/>
-                                        </div>
+                                <div class="col-md-6 col-sm-12 pt-3">
+                                    <label for="name_ar"
+                                        class="mr-sm-2">{{ trans('classroom_trans.name_ar') }}
+                                        :</label>
+                                    <input class="form-control" type="text" name="name_ar" id='name_ar'/>
+                                </div>
 
 
-                                        <div class="col-md-6 col-sm-12 pt-3">
-                                            <label for="name_en"
-                                                class="mr-sm-2">{{ trans('classroom_trans.name_en') }}
-                                                :</label>
-                                            <input class="form-control" type="text" name="name_en" />
-                                        </div>
+                                <div class="col-md-6 col-sm-12 pt-3">
+                                    <label for="name_en"
+                                        class="mr-sm-2">{{ trans('classroom_trans.name_en') }}
+                                        :</label>
+                                    <input class="form-control" type="text" name="name_en" />
+                                </div>
 
 
-                                        <div class="col-md-6 col-sm-12 pt-3">
-                                            <label for="grade_name"
-                                                class="mr-sm-2">{{ trans('classroom_trans.grade_name_choice') }}
-                                                :</label>
+                                <div class="col-md-6 col-sm-12 pt-3">
+                                    <label for="grade_name"
+                                        class="mr-sm-2">{{ trans('classroom_trans.grade_name_choice') }}
+                                        :</label>
 
-                                            <div class="box">
-                                                <select class="p-2 form-control" name="gradeID" id='grade_name'>
-                                                <option value="0" disabled selected>choose grade</option>
-                                                @foreach($gradesToAddClassroom as $grade)
-                                                    <option value="{{$grade->id}}">{{$grade->name}}</option>
-                                                @endforeach
-                                                </select>
-                                            </div>
-
-                                        </div>
-                                        <div class="col-md-6 col-sm-12 pt-3">
-                                            <label for="classes_name"
-                                                class="mr-sm-2">{{ trans('classroom_trans.classes_name_choice') }}
-                                                :</label>
-
-                                            <div class="box">
-                                                <select class="p-2 form-control classesID" name="classesID" id='classes_name'>
-            
-                                                    <option value="0" disabled selected>{{ trans('classroom_trans.classes_name_choice') }}</option>
-                                                    @foreach($classes as $class)
-                                                    <option value="{{$class->id}}">{{$class->name}}</option>
-                                                    @endforeach
-                                                    
-                                                </select>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="col-md-6 col-sm-12 pt-3">
-                                            <label for="teacher"
-                                                class="mr-sm-2">{{ trans('classroom_trans.teacher_choice') }}
-                                                :</label>
-
-                                            <div class="box">
-                                                <select class="p-2 form-control" name="teacherID" id='teacher' multiple size='2' title='ctr+click to multiple'>
-            
-                                                    <option value="0" disabled selected>{{ trans('classroom_trans.teacher_choice') }}</option>
-                                                    @foreach($teachers as $teacher)
-                                                    <option value="{{$teacher->id}}">{{$teacher->name}}</option>
-                                                    @endforeach
-                                                    
-                                                </select>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="col-md-6 col-sm-12 pt-3">
-
-                                            <div class="form-check bg-light" style="padding:10px 20px;">
-                                                <input type="checkbox" class="form-check-input" id="status" name='status'>
-                                                <label class="form-check-label" for="status">{{trans('classroom_trans.status')}}</label>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="col pt-3">
-                                            <input class="btn btn-danger btn-block" data-repeater-delete
-                                                type="button" value="{{ trans('classes_trans.delete_row') }}" />
-                                        </div>
+                                    <div class="box">
+                                        <select class="p-2 form-control" name="gradeID" id='grade_name'>
+                                        <option value="0" disabled selected>choose grade</option>
+                                        @foreach($gradesToAddClassroom as $grade)
+                                            <option value="{{$grade->id}}">{{$grade->name}}</option>
+                                        @endforeach
+                                        </select>
                                     </div>
+
                                 </div>
-                            </div>
-                            <div class="row mt-20">
-                                <div class="col-12">
-                                    <input class="button" data-repeater-create type="button" value="{{ trans('classroom_trans.add_row') }}"/>
+                                <div class="col-md-6 col-sm-12 pt-3">
+                                    <label for="classes_name"
+                                        class="mr-sm-2">{{ trans('classroom_trans.classes_name_choice') }}
+                                        :</label>
+
+                                    <div class="box">
+                                        <select class="p-2 form-control classesID" name="classesID" id='classes_name'>
+    
+                                            <option value="0" disabled selected>{{ trans('classroom_trans.classes_name_choice') }}</option>
+                                            @foreach($classes as $class)
+                                            <option value="{{$class->id}}">{{$class->name}}</option>
+                                            @endforeach
+                                            
+                                        </select>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-6 col-sm-12 pt-3">
+                                    <label for="teacher"
+                                        class="mr-sm-2">{{ trans('classroom_trans.teacher_choice') }}
+                                        :</label>
+
+                                    <div class="box">
+                                        <select class="p-2 form-control" name="teacherID[]" id='teacher' multiple size='2' title='ctr+click to multiple'>
+    
+                                            <option value="0" disabled selected>{{ trans('classroom_trans.teacher_choice') }}</option>
+                                            @foreach($teachers as $teacher)
+                                            <option value="{{$teacher->id}}">{{$teacher->name}}</option>
+                                            @endforeach
+                                            
+                                        </select>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-6 col-sm-12 pt-3">
+
+                                    <div class="form-check bg-light" style="padding:10px 20px;">
+                                        <input type="checkbox" class="form-check-input" id="status" name='status'>
+                                        <label class="form-check-label" for="status">{{trans('classroom_trans.status')}}</label>
+                                    </div>
+
                                 </div>
 
                             </div>
+                                
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary"
@@ -425,4 +413,7 @@
 @endsection
 @section('js')
 <script src="{{URL::asset('assets/js/custom/getClasses_ajax.js')}}"></script>
+<script>
+    $('#classroom').attr('class','active_my');
+</script>
 @endsection

@@ -8,41 +8,60 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class AuthenticatedSessionController extends Controller
 {
-    /**
-     * Display the login view.
-     */
-    public function create(): View
+
+    public function loginShow($type)
     {
-        return view('auth.login');
+        return view('auth.login',compact('type'));
     }
 
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function login(LoginRequest $request)
     {
-        $request->authenticate();
+        $guardName = $request->guardName;
+        $remember = isset($request->remember_me) ? true : false;
 
-        $request->session()->regenerate();
+        if(Auth::guard($guardName)->attempt(['email'=>$request->email,'password'=>$request->password],$remember)) {
+            return $this->redirectTo($guardName);
+        }else {
+            return redirect()->route('auth.selection');
+        }
 
-        return redirect()->intended(RouteServiceProvider::HOME);
     }
+
+    public function redirectTo($guardName)
+    {
+        if($guardName === 'student' ) {
+            return redirect(RouteServiceProvider::STUDENT);
+        }elseif($guardName === 'teacher' ) {
+            return redirect(RouteServiceProvider::TEACHER);
+        }elseif($guardName === 'parent') {
+            return redirect(RouteServiceProvider::PARENT);
+        }else {
+            return redirect(RouteServiceProvider::HOME);
+        }
+
+    }
+
+    
 
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function logout(Request $request)
     {
-        Auth::guard('web')->logout();
+       
+        Auth::guard($request->guard)->logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect(route('auth.selection'));
     }
 }

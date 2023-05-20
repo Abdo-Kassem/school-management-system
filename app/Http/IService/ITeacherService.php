@@ -5,7 +5,7 @@ use App\Http\IService\ParentInterfaces\IService;
 
 interface ITeacherService extends IService
 {
-    
+    public function updateTeacherProfile($data);
 }
 
 

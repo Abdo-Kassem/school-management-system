@@ -2,7 +2,7 @@
 
 
 return [
-
+    'page_title' => 'الصفوف الدراسيه',
     'add_study_year' => 'اضافة صف دراسي',
     'delete_checkbox' => 'حذف الكل',
     'checkbox_delete_list' => 'حذف العناصر المختاره',
@@ -17,6 +17,7 @@ return [
     'create' => 'انشاء',
     'save' => 'حفظ',
     'delete' => 'حذف',
+    'show' => 'عرض',
     'addition_header' => 'اضافة صف دراسي',
     'search_by_grade' => 'ابحث بواسطة المرحله الدراسيه',
     'grade_name' => 'اسم المرحله الدراسيه',

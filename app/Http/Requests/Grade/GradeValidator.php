@@ -22,12 +22,11 @@ class GradeValidator extends FormRequest
      * @return array<string, mixed>
      */
     public function rules()
-    {
+    { 
         return [
-            'name.*' => 'unique_translation:grades,name',
-            'name_ar' => 'required',
-            'name_en' => 'required',
-            'notes' => 'nullable|string'
+            'name_ar' => 'required|unique:grades,name->ar,'.$this->id,
+            'name_en' => 'required|unique:grades,name->en,'.$this->id,
+            'notes' => 'required|string'
         ];
     }
 

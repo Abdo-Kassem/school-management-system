@@ -45,7 +45,8 @@
                         </div>
                     @endif
 
-                    <button type="button" class="button x-small" data-toggle="modal" data-target="#exampleModal">
+                    <button type="button" class="button x-small" data-toggle="modal" data-target="#exampleModal"
+                            style="text-transform:capitalize">
                         {{ trans('Grades_trans.add_Grade') }}
                     </button>
                     <br><br>
@@ -247,6 +248,7 @@
     <!-- row closed -->
 @endsection
 @section('js')
-    @toastr_js
-    @toastr_render
+<script>
+    $('#grade').attr('class','active_my');
+</script>
 @endsection

@@ -2,7 +2,7 @@
 
 
 return [
-
+    'page_title' => 'classes',
     'add_study_year' => 'add study year',
     'delete_checkbox' => 'delete all',
     'checkbox_delete_list' =>  'delete choice list items',
@@ -17,6 +17,7 @@ return [
     'create' => 'create',
     'save' => 'save',
     'delete' => 'delete',
+    'show' => 'show',
     'addition_header' => 'add new study year',
     'search_by_grade' => 'search by grade',
     'grade_name' => 'greade name',

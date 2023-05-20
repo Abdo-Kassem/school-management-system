@@ -37,7 +37,8 @@
                 </div>
             @endif
 
-            <button type="button" class="button x-small" data-toggle="modal" data-target="#add_teacher">
+            <button type="button" class="button x-small" data-toggle="modal" data-target="#add_teacher"
+                    style="text-transform:capitalize">
                 {{ __('teacher_trans.add_teacher') }}
             </button>
 
@@ -412,8 +413,6 @@
 <!-- row closed -->
 @endsection
 @section('js')
-@toastr_js
-@toastr_render
 
 <script type="text/javascript">
     function checkAll(className,obj) {
@@ -440,6 +439,7 @@
             }
         });
     });
+    $('#teacher').attr('class','active_my');
 </script>
 
 

@@ -2,11 +2,14 @@
 
 return [
     'title_page' => 'قائمة الطلاب',
+    'title_page_answer' => 'قائمة اجابات الطلاب ',
     'student_name'=>'اسم الطالب',
     'add_student'=>'اضافة طالب',
     'edit'=>'تعديل طالب',
     'delete'=>'حذف طالب',
     'show' => 'عرض الطالب',
+    'show_answer' => 'عرض اجابات الطالب',
+    'addStudentFees' => 'اضافة رسوم طالب',
     'operation' => 'العمليات',
     'email'=>'البريد الالكتروني',
     'password'=>'كلمة المرور',
@@ -39,5 +42,7 @@ return [
     'delete_attachment' => 'حذف مرفقات الطالب',
     'student_details' => 'بيانات الطلاب',
     'fileName' => 'اسم الملف',
-    'created_at' => 'تاريخ رفع الصوره'
+    'created_at' => 'تاريخ رفع الصوره',
+    'send' => 'ارسال',
+    'grades' => 'درجات الطالب',
 ];

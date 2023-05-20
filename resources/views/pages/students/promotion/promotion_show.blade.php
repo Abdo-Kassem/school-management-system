@@ -1,13 +1,13 @@
 @extends('layouts.master')
 
 @section('title')
-    {{ trans('student_trans.title_page') }}
+    {{ trans('promotion_trans.title_page') }}
 @endsection
 @section('page-header')
 <!-- breadcrumb -->
 @section('PageTitle')
-{{ trans('student_trans.title_page') }}
-@stop
+{{ trans('promotion_trans.title_page') }}
+@stops
 <!-- breadcrumb -->
 @endsection
 @section('content')
@@ -27,20 +27,15 @@
                   {{session('success')}}
               </div>
             @endif
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+            
+            <a href="{{route('promotion.create')}}" class="btn btn-success" style='padding:5px 20px;text-transform:capitalize'>
+                {{ __('promotion_trans.add_promotion') }}
+            </a>
 
-            <button type="button" class="button x-small" data-toggle="modal" data-target="#add_student">
-                {{ __('student_trans.add_student') }}
+            <button class="btn btn-danger rollback" style='padding:5px 20px;text-transform:capitalize' data-toggle="modal" data-target="#deleteAll">
+                {{trans('promotion_trans.back')}}
             </button>
-
+            @include('pages.students.promotion.deleteAllModal')
 
             <br><br>
 
@@ -49,293 +44,47 @@
                     style="text-align: center">
                     <thead>
                         <tr>
+                            <th><input type='checkbox' name='checkedAll' class='check_all'></th>
                             <th>#</th>
-                            <th>{{ trans('student_trans.student_name') }}</th>
-                            <th>{{ trans('student_trans.email') }}</th>
-                            <th>{{ trans('student_trans.gender') }}</th>
-                            <th>{{ trans('student_trans.acadimy_year') }}</th>
-                            <th>{{ trans('student_trans.birth.date') }}</th>
-                            <th>{{ trans('student_trans.address') }}</th>
-                            <th>{{ trans('student_trans.religion') }}</th>
-                            <th>{{ trans('student_trans.grade') }}</th>
-                            <th>{{ trans('student_trans.operation') }}</th>
+                            <th>{{ trans('promotion_trans.gradeFrom') }}</th>
+                            <th>{{ trans('promotion_trans.classFrom') }}</th>
+                            <th>{{ trans('promotion_trans.gradeTo') }}</th>
+                            <th>{{ trans('promotion_trans.classTo') }}</th>
+                            <th>{{ trans('promotion_trans.operation') }}</th>
                         </tr>
                     </thead>
                     <tbody>
 
                         <?php $i = 0; ?>
 
-                        @foreach ($students as $student)
+                        @foreach ($promotions as $promotion)
                             <tr>
                                 <?php $i++; ?>
+                                <td><input type='checkbox' value="{{$promotion->id}}" class='promotion_checked'></td>
                                 <td>{{ $i }}</td>
-                                <td>{{ $student->name }}</td>
-                                <td>{{ $student->email }}</td>
-                                <td><?php echo trans('student_trans.gender_'.$student->gender) ?></td>
-                                <td>{{ $student->academic_year }}</td>
-                                <td>{{ $student->birth_date }}</td>
-                                <td>{{ $student->address }}</td>
-                                <td>{{ $student->religion->name }}</td>
-                                <td>{{ $student->grade->name }}</td>
+                                <td>{{ $promotion->gradeFrom->name }}</td>
+                                <td>{{ $promotion->ClassFrom->name }}</td>
+                                <td>{{ $promotion->gradeTo->name }}</td>
+                                <td>{{ $promotion->classTo->name }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal"
-                                        data-target="#edit{{ $student->id }}"
-                                        title="{{ trans('student_trans.edit') }}"><i class="fa fa-edit"></i></button>
                                     <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
-                                        data-target="#delete{{ $student->id }}"
-                                        title="{{ trans('student_trans.delete') }}"><i
-                                            class="fa fa-trash"></i></button>
-                                    <a href="{{route('student.show',$student->id)}}" class="btn btn-warning btn-sm" 
-                                        title="{{ trans('student_trans.show') }}"><i class="fa fa-eye" style='color:white'></i>
+                                        data-target="#delete{{ $promotion->id }}">{{ trans('promotion_trans.back.one') }}
+                                    </button>
+                                    <a href="{{route('promotion.show',$promotion->id)}}" class="btn btn-warning btn-sm"
+                                        title="{{ trans('promotion_trans.show') }}"><i class="fa fa-eye" style='color:white'></i>
                                     </a>
                                 </td>
                             </tr>
 
-                            <!-- edit_modal_student -->
-                            <div class="modal fade" id="edit{{$student->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                                aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 style="font-family: 'Cairo', sans-serif;" class="modal-title" id="exampleModalLabel">
-                                                {{ trans('student_trans.edit') }}
-                                            </h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-
-                                            <form class=" row mb-30" action="{{route('student.update')}}" method="POST">
-                                                {{method_field('patch')}}
-                                                @csrf
-                                                <div class="card-body">
-                                                    <div class="row">
-
-                                                        <div class="col-12 pt-2">
-                                                            <label for="email"
-                                                                class="mr-sm-2">{{ trans('student_trans.email') }}
-                                                                :</label>
-                                                            <input class="form-control" type="text" name="email" id='email'
-                                                                value="{{$student->email}}">
-                                                        </div>
-
-                                                        <div class="col-6 pt-2">
-                                                            <label for="name_ar"
-                                                                class="mr-sm-2">{{ trans('student_trans.name_ar') }}
-                                                                :</label>
-                                                            <input class="form-control" type="text" name="name_ar" id='name_ar'
-                                                                value="{{$student->getTranslation('name','ar')}}">
-                                                        </div>
-
-                                                        <div class="col-6 pt-2">
-                                                            <label for="name_en"
-                                                                class="mr-sm-2">{{ trans('student_trans.name_en') }}
-                                                                :</label>
-                                                            <input class="form-control" type="text" name="name_en" 
-                                                                value="{{$student->getTranslation('name','en')}}">
-                                                        </div>
-
-                                                        <div class="col-6 pt-2">
-                                                            <label for="address"
-                                                                class="mr-sm-2">{{ trans('student_trans.address') }}
-                                                                :</label>
-                                                            <input class="form-control" type="text" name="address" id='address'
-                                                                value="{{$student->address}}">
-                                                        </div>
-
-                                                        <div class="col-6 pt-2">
-                                                            <label for="birthDate"
-                                                                class="mr-sm-2">{{ trans('student_trans.birth.date') }}
-                                                                :</label>
-                                                            <input class="form-control" type="date" name="birthDate" id='birthDate'
-                                                                value="{{$student->birth_date}}">
-                                                            
-                                                        </div>
-
-                                                        <div class="hidden">
-                                                            <input type='hidden' name='studentID' value="{{$student->id}}">
-                                                        </div>
-
-                                                        <div class="col-4 pt-2">
-                                                            <label for="gender"
-                                                                class="mr-sm-2">{{ trans('student_trans.gender') }}
-                                                                :</label>
-
-                                                            <div class="box">
-                                                                <select class="p-2 form-control" name="gender" id='gender'>
-                                                                    <option value="male" <?php if($student->gender == 'male') echo'selected';?>>
-                                                                        {{ trans('student_trans.gender_male') }}
-                                                                    </option>
-                                                                    <option value="female" <?php if($student->gender == 'female') echo'selected';?>>
-                                                                        {{ trans('student_trans.gender_female') }}
-                                                                    </option>
-                                                                    <option value="other" <?php if($student->gender == 'other') echo'selected';?>>
-                                                                        {{ trans('student_trans.gender_other') }}
-                                                                    </option>    
-                                                                </select>
-                                                            </div>
-
-                                                        </div>
-                                                        <div class="col-4 pt-2">
-                                                            <label for="acadimic_year"
-                                                                class="mr-sm-2">{{ trans('student_trans.acadimy_year') }}
-                                                                :</label>
-
-                                                            <div class="box">
-                                                                <select class="p-2 form-control" name="acadimy_year" id='acadimic_year'>
-                                                                    <option value="{{date('Y')}}" <?php if($student->academic_year == date('Y')) echo'selected';?>>
-                                                                        {{date('Y')}}
-                                                                    </option>
-                                                                    <option value="{{date('Y')+1}}" <?php if($student->academic_year == date('Y')+1) echo'selected';?>>
-                                                                        {{date('Y')+1}}
-                                                                    </option>
-                                                                </select>
-                                                            </div>
-
-                                                        </div>
-                                                    
-                                                        <div class="col-4 pt-2">
-                                                            <label for="religion"
-                                                                class="mr-sm-2">{{ trans('student_trans.religion') }}
-                                                                :</label>
-
-                                                            <div class="box">
-                                                                <select class="p-2 form-control" name="religionID" id='religion'>
-                                                                    @foreach($religions as $religion)
-                                                                    <option value="{{$religion->id}}" <?php if($student->religionID === $religion->id) echo'selected';?>>
-                                                                        {{$religion->name}}
-                                                                    </option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-
-                                                        </div>
-
-                                                        <div class="col-4 pt-2">
-                                                            <label for="nationality"
-                                                                class="mr-sm-2">{{ trans('student_trans.nationality') }}
-                                                                :</label>
-
-                                                            <div class="box">
-                                                                <select class="p-2 form-control" name="nationalityID" id='nationality'>
-                                                                    @foreach($nationalities as $nationality)
-                                                                    <option value="{{$nationality->id}}" <?php if($student->nationalitie_ID === $nationality->id) echo'selected';?>>
-                                                                        {{$nationality->name}}
-                                                                    </option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-
-                                                        </div>
-
-                                                        <div class="col-4 pt-2">
-                                                            <label for="blood"
-                                                                class="mr-sm-2">{{ trans('student_trans.blood') }}
-                                                                :</label>
-
-                                                            <div class="box">
-                                                                <select class="p-2 form-control" name="bloodID" id='blood'>
-                                                                    @foreach($bloods as $blood)
-                                                                    <option value="{{$blood->id}}" <?php if($student->bloodID === $blood->id) echo'selected';?>>
-                                                                        {{$blood->name}}
-                                                                    </option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-
-                                                        </div>
-
-                                                        <div class="col-4 pt-2">
-                                                            <label for="parent"
-                                                                class="mr-sm-2">{{ trans('student_trans.parent') }}
-                                                                :</label>
-
-                                                            <div class="box">
-                                                                <select class="p-2 form-control" name="parentID" id='parent'>
-                                                                    @foreach($parents as $parent)
-                                                                    <option value="{{$parent->id}}" <?php if($student->parentID === $parent->id) echo'selected';?>>
-                                                                        {{$parent->fatherName}}
-                                                                    </option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-
-                                                        </div>
-
-                                                        <div class="col-4 pt-2">
-                                                            <label for="grade"
-                                                                class="mr-sm-2">{{ trans('student_trans.grade') }}
-                                                                :</label>
-
-                                                            <div class="box">
-                                                                <select class="p-2 form-control" name="gradeID" id='grade'>
-                                                                    <option value="0" disabled>{{trans('student_trans.choose.grade')}}</option>
-                                                                    @foreach($grades as $grade)
-                                                                    <option value="{{$grade->id}}" <?php if($student->gradeID === $grade->id) echo'selected';?>>
-                                                                        {{$grade->name}}
-                                                                    </option>
-                                                                    @endforeach
-                                                                </select>
-                                                            </div>
-
-                                                        </div>
-
-                                                        <div class="col-4 pt-2">
-                                                            <label for="class"
-                                                                class="mr-sm-2">{{ trans('student_trans.class') }}
-                                                                :</label>
-
-                                                            <div class="box">
-                                                                <select class="p-2 form-control classesID" name="classID" id='class'>
-                                                                    <option value="{{$student->classID}}">{{$student->class->name}}</option>
-                                                                </select>
-                                                            </div>
-
-                                                        </div>
-
-                                                        <div class="col-4 pt-2">
-                                                            <label for="classroom"
-                                                                class="mr-sm-2">{{ trans('student_trans.classroom') }}
-                                                                :</label>
-
-                                                            <div class="box">
-                                                                <select class="p-2 form-control classroomID" name="classroomID" id='classroom'>
-                                                                    <option value="{{$student->classroomID}}">{{$student->classroom->name}}</option>
-                                                                </select>
-                                                            </div>
-
-                                                        </div>
-
-                                                    </div>
-                                                        
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" 
-                                                            data-dismiss="modal">{{ trans('teacher_trans.close') }}
-                                                        </button>
-                                                        <button type="submit" name='update'
-                                                            class="btn btn-success">{{ trans('teacher_trans.update') }}
-                                                        </button>
-                                                    </div>
-
-
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <!--end edit student-->
-                            <!-- delete_modal_student -->
-                            <div class="modal fade" id="delete{{ $student->id }}" tabindex="-1" role="dialog"
+                            <!-- delete_modal_promotion -->
+                            <div class="modal fade" id="delete{{ $promotion->id }}" tabindex="-1" role="dialog"
                                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 style="font-family: 'Cairo', sans-serif;" class="modal-title"
                                                 id="exampleModalLabel">
-                                                {{ trans('student_trans.delete') }}
+                                                {{ trans('promotion_trans.delete') }}
                                             </h5>
                                             <button type="button" class="close" data-dismiss="modal"
                                                     aria-label="Close">
@@ -343,17 +92,17 @@
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <form action="{{ route('student.destroy',$student->id) }}"
+                                            <form action="{{ route('promotion.destroy') }}"
                                                   method="post">
                                                 {{ method_field('delete') }}
                                                 @csrf
-                                                {{ trans('teacher_trans.warning.delete') }}
-                                                
+                                                {{ trans('promotion_trans.warning.delete') }}
+                                                <input type="hidden" name='promotionID' value="{{$promotion->id}}">
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">{{ trans('student_trans.close') }}</button>
+                                                            data-dismiss="modal">{{ trans('promotion_trans.close') }}</button>
                                                     <button type="submit"
-                                                            class="btn btn-danger">{{ trans('student_trans.delete') }}</button>
+                                                            class="btn btn-danger">{{ trans('promotion_trans.delete') }}</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -368,235 +117,6 @@
     </div>
 </div>
 
-<!-- add_modal_teacher -->
-<div class="modal fade" id="add_student" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 style="font-family: 'Cairo', sans-serif;" class="modal-title" id="exampleModalLabel">
-                    {{ trans('student_trans.add_student') }}
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-
-                <form class=" row mb-30" action="{{route('student.store')}}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <div class="card-body">
-                        <div class="row">
-
-                            <div class="col-6 pt-2">
-                                <label for="email"
-                                    class="mr-sm-2">{{ trans('student_trans.email') }}
-                                    :</label>
-                                <input class="form-control" type="text" name="email" id='email'/>
-                            </div>
-
-                            <div class="col-6 pt-2">
-                                <label for="password"
-                                    class="mr-sm-2">{{ trans('student_trans.password') }}
-                                    :</label>
-                                <input class="form-control" type="password" name="password" />
-                            </div>
-
-                            <div class="col-6 pt-2">
-                                <label for="name_ar"
-                                    class="mr-sm-2">{{ trans('student_trans.name_ar') }}
-                                    :</label>
-                                <input class="form-control" type="text" name="name_ar" id='name_ar'/>
-                            </div>
-
-                            <div class="col-6 pt-2">
-                                <label for="name_en"
-                                    class="mr-sm-2">{{ trans('student_trans.name_en') }}
-                                    :</label>
-                                <input class="form-control" type="text" name="name_en" />
-                            </div>
-
-                            <div class="col-6 pt-2">
-                                <label for="phone"
-                                    class="mr-sm-2">{{ trans('student_trans.address') }}
-                                    :</label>
-                                <input class="form-control" type="text" name="address" id='phone' >
-                            </div>
-
-                            <div class="col-6 pt-2">
-                                <label for="salary"
-                                    class="mr-sm-2">{{ trans('student_trans.birth.date') }}
-                                    :</label>
-                                <input class="form-control" type="date" name="birthDate">
-                                
-                            </div>
-
-                            <div class="col-4 pt-2">
-                                <label for="gender"
-                                    class="mr-sm-2">{{ trans('student_trans.gender') }}
-                                    :</label>
-
-                                <div class="box">
-                                    <select class="p-2 form-control" name="gender" id='gender'>
-                                        <option value="male">{{ trans('student_trans.gender_male') }}</option>
-                                        <option value="female">{{ trans('student_trans.gender_female') }}</option>
-                                        <option value="other">{{ trans('student_trans.gender_other') }}</option>    
-                                    </select>
-                                </div>
-
-                            </div>
-                            <div class="col-4 pt-2">
-                                <label for="acadimic_year"
-                                    class="mr-sm-2">{{ trans('student_trans.acadimy_year') }}
-                                    :</label>
-
-                                <div class="box">
-                                    <select class="p-2 form-control" name="acadimy_year" id='acadimic_year'>
-                                        <option value="{{date('Y')}}">{{date('Y')}}</option>
-                                        <option value="{{date('Y')+1}}">{{date('Y')+1}}</option>
-                                    </select>
-                                </div>
-
-                            </div>
-                          
-                            <div class="col-4 pt-2">
-                                <label for="religion"
-                                    class="mr-sm-2">{{ trans('student_trans.religion') }}
-                                    :</label>
-
-                                <div class="box">
-                                    <select class="p-2 form-control" name="religionID" id='religion'>
-                                        @foreach($religions as $religion)
-                                        <option value="{{$religion->id}}">{{$religion->name}}</option>
-                                         @endforeach
-                                    </select>
-                                </div>
-
-                            </div>
-
-                            <div class="col-4 pt-2">
-                                <label for="nationality"
-                                    class="mr-sm-2">{{ trans('student_trans.nationality') }}
-                                    :</label>
-
-                                <div class="box">
-                                    <select class="p-2 form-control" name="nationalityID" id='nationality'>
-                                        @foreach($nationalities as $nationality)
-                                        <option value="{{$nationality->id}}">{{$nationality->name}}</option>
-                                         @endforeach
-                                    </select>
-                                </div>
-
-                            </div>
-
-                            <div class="col-4 pt-2">
-                                <label for="blood"
-                                    class="mr-sm-2">{{ trans('student_trans.blood') }}
-                                    :</label>
-
-                                <div class="box">
-                                    <select class="p-2 form-control" name="bloodID" id='blood'>
-                                        @foreach($bloods as $blood)
-                                        <option value="{{$blood->id}}">{{$blood->name}}</option>
-                                         @endforeach
-                                    </select>
-                                </div>
-
-                            </div>
-
-                            <div class="col-4 pt-2">
-                                <label for="parent"
-                                    class="mr-sm-2">{{ trans('student_trans.parent') }}
-                                    :</label>
-
-                                <div class="box">
-                                    <select class="p-2 form-control" name="parentID" id='parent'>
-                                        @foreach($parents as $parent)
-                                        <option value="{{$parent->id}}">{{$parent->fatherName}}</option>
-                                         @endforeach
-                                    </select>
-                                </div>
-
-                            </div>
-
-                            <div class="col-4 pt-2">
-                                <label for="grade"
-                                    class="mr-sm-2">{{ trans('student_trans.grade') }}
-                                    :</label>
-
-                                <div class="box">
-                                    <select class="p-2 form-control" name="gradeID" id='grade'>
-                                        <option value="0" disabled selected>{{trans('student_trans.choose.grade')}}</option>
-                                        @foreach($grades as $grade)
-                                        <option value="{{$grade->id}}">{{$grade->name}}</option>
-                                         @endforeach
-                                    </select>
-                                </div>
-
-                            </div>
-
-                            <div class="col-4 pt-2">
-                                <label for="class"
-                                    class="mr-sm-2">{{ trans('student_trans.class') }}
-                                    :</label>
-
-                                <div class="box">
-                                    <select class="p-2 form-control classesID" name="classID" id='class'>
-                                        
-                                    </select>
-                                </div>
-
-                            </div>
-
-                            <div class="col-4 pt-2">
-                                <label for="classroom"
-                                    class="mr-sm-2">{{ trans('student_trans.classroom') }}
-                                    :</label>
-
-                                <div class="box">
-                                    <select class="p-2 form-control classroomID" name="classroomID" id='classroom'>
-                                        
-                                    </select>
-                                </div>
-
-                            </div>
-
-                            <div class="col-12 pt-2">
-                                <label for="attachments"
-                                    class="mr-sm-2">{{ trans('student_trans.attachments') }}
-                                    :</label>
-
-                                <div class="box">
-                                    <input type='file' class="p-2 form-control" name="attachments[]" 
-                                        id='attachments' accept="image/*" multiple>
-                                </div>
-
-                            </div>
-
-                        </div>
-                            
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary"
-                                data-dismiss="modal">{{ trans('teacher_trans.close') }}
-                            </button>
-                            <button type="submit" name='create'
-                                class="btn btn-success">{{ trans('teacher_trans.create') }}
-                            </button>
-                        </div>
-
-
-                    </div>
-                </form>
-            </div>
-
-
-        </div>
-
-    </div>
-
-</div>
-<!-- end add modal-->
-
 </div>
 <!-- row closed -->
 @endsection
@@ -604,7 +124,8 @@
 @toastr_js
 @toastr_render
 
-<script type="text/javascript" src="{{URL::asset('assets\js\custom\getClasses_ajax.js')}}"></script>
-<script type="text/javascript" src="{{URL::asset('assets\js\custom\getClassroom_ajax.js')}}"></script>
-
+<script type="text/javascript" src="{{URL::asset('assets\js\custom\checkBox.js')}}"></script>
+<script>
+    $('#student').attr('class','active_my');
+</script>
 @endsection

@@ -39,20 +39,14 @@ public function create()
  */
 public function store(GradeValidator $request)
 {
-    if(Grade::where('name->en',$request->name_en)->orWhere('name->ar',$request->name_ar)->exists())
-        return redirect()->back()->with('fail',__('messages.grade.exist'));
-    
+ 
     try{
-        if(isset($request->notes)) {
-            $grade = Grade::create([
-                'name' => ['ar'=>$request->name_ar,'en'=>$request->name_en],
-                'notes' => $request->notes
-            ]);
-        }else {
-            $grade = Grade::create([
-                'name' => ['ar'=>$request->name_ar,'en'=>$request->name_en]
-            ]);
-        }
+       
+        $grade = Grade::create([
+            'name' => ['ar'=>$request->name_ar,'en'=>$request->name_en],
+            'notes' => $request->notes
+        ]);
+        
     }catch(Exception $ob){
         return redirect()->back()->with('fail',__('messages.exception_fail'));
     }

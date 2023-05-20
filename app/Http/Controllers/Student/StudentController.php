@@ -148,4 +148,9 @@ class StudentController extends Controller
         
     }
 
+    public function addStudyFees($studentID)
+    {
+        
+    }
+
 }

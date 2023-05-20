@@ -77,13 +77,13 @@ return [
     'lt' => [
         'array' => 'The :attribute must have less than :value items.',
         'file' => 'The :attribute must be less than :value kilobytes.',
-        'numeric' => 'The :attribute must be less than :value.',
+        'numeric' => 'The :attribute يجب ان يكون اقل من :value.',
         'string' => 'The :attribute must be less than :value characters.',
     ],
     'lte' => [
         'array' => 'The :attribute must not have more than :value items.',
         'file' => 'The :attribute must be less than or equal to :value kilobytes.',
-        'numeric' => 'The :attribute must be less than or equal to :value.',
+        'numeric' => 'The :attribute يجب ان يكون اقل من او يساوي :value.',
         'string' => 'The :attribute must be less than or equal to :value characters.',
     ],
     'mac_address' => 'The :attribute must be a valid MAC address.',

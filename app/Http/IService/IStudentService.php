@@ -13,6 +13,10 @@ interface IStudentService extends IService
     public function deleteAttachment(Request $request);
 
     public function downloadAttachment($studentID,$fileName);
+
+    public function addStudyFees($id);
+
+    public function getStudentsOfTeacher();
 }
 
 ?>

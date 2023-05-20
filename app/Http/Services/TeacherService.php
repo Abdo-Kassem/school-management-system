@@ -5,6 +5,7 @@ namespace App\Http\Services;
 use App\Http\IService\ITeacherService;
 use App\Models\Teacher;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class TeacherService implements ITeacherService
@@ -68,6 +69,23 @@ class TeacherService implements ITeacherService
         }
     }
 
+    public function updateTeacherProfile($data)
+    {
+        $teacher = Teacher::select(['name','id','address','phone','password'])->find(Auth::guard('teacher')->id());
+
+        $teacher->name = ['ar'=>$data->name_ar,'en'=>$data->name_en];
+        $teacher->address = $data->address;
+        $teacher->phone = $data->phone;
+        $teacher->password = Hash::make($data->password);
+        
+        try{
+            return $teacher->save();
+        }catch(Exception $ex) {
+            throw $ex;
+        }
+        
+    }
+
     public function delete($id)
     {
         $teacher = Teacher::findorfail($id);
@@ -82,6 +100,7 @@ class TeacherService implements ITeacherService
         }
 
     }
+
 }
 
 
